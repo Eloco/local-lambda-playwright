@@ -8,6 +8,7 @@ build on
 - https://github.com/Eloco/super-lambda-playwright/pkgs/container/super-lambda-playwright
 
 ```
+sudo docker pull public.ecr.aws/w3s2d0z8/super-lambda-playwright:main
 sudo docker pull ghcr.io/eloco/super-lambda-playwright:latest
 sudo docker run --rm=True -p 9000:8080 ghcr.io/eloco/super-lambda-playwright
 ```

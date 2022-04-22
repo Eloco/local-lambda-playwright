@@ -4,8 +4,9 @@
 from playwright.sync_api import sync_playwright
 from playwright_stealth import stealth_sync
 from wrapt_timeout_decorator import *
-from pyforest import *
 import base64
+import os,sys
+import httpx,requests
 
 result = """ u need to send param  event[run] or event[run_base64] """
 

@@ -14,12 +14,12 @@ sudo docker run --rm=True -p 9000:8080 ghcr.io/eloco/local-lambda-playwright
 
 ```
 bs64=`echo "page.goto('http://example.com'); result=page.content()" | base64 -w 0`
-curl -XPOST "http://localhost:9000/2015-03-31/functions/function/invocations" -d '{"browser":"chromium","run_base64":"'${bs64}'"}'
+curl -XPOST "http://localhost:9000/2015-03-31/functions/function/invocations" -d '{"browser":"chromium","run":"'${bs64}'"}'
 ```
 
 ```
 bs64=`echo "stealth_sync(page);page.goto('http://whatsmyuseragent.org/',wait_until='commit'); result=page.content()" | base64 -w 0`
-curl -s -XPOST "http://localhost:9000/2015-03-31/functions/function/invocations" -d '{"browser":"webkit","run_base64":"'${bs64}'"}' | jq .body | html2text | sed  's/[\\n" ]//g' | grep -v '^$'
+curl -s -XPOST "http://localhost:9000/2015-03-31/functions/function/invocations" -d '{"browser":"webkit","run":"'${bs64}'"}' | jq .body | html2text | sed  's/[\\n" ]//g' | grep -v '^$'
 
 __[__What'smyUserAget?](#page-top)
 *[](#page-top)

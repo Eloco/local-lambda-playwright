@@ -9,10 +9,15 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v2
+
+    - id: ecr
     - name: Push to public ECR
-      uses: citizensadvice/publish-to-public-ecr-github-action@main
-      id: ecr
+      uses: Wandalen/wretry.action@v1.0.11
       with:
-        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        ecr-alias: 421484303838
+        action: citizensadvice/publish-to-public-ecr-github-action@main
+        with: |
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          ecr-alias: 421484303838
+        attempt_limit: 3
+        attempt_delay: 2000

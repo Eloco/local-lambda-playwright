@@ -1,5 +1,7 @@
+ARG FUNCTION_DIR="/function"
+
 FROM mcr.microsoft.com/playwright/python:latest as build-image
-ENV FUNCTION_DIR="/app"
+ARG FUNCTION_DIR
 
 # Create function directory
 RUN mkdir -p ${FUNCTION_DIR}
@@ -21,6 +23,10 @@ RUN apt-get update && \
 
 # Multi-stage build: grab a fresh copy of the base image
 FROM mcr.microsoft.com/playwright/python:latest
+
+ARG FUNCTION_DIR
+# Set working directory to function root directory
+WORKDIR ${FUNCTION_DIR}
 
 # Copy in the build image dependencies
 COPY --from=build-image ${FUNCTION_DIR} ${FUNCTION_DIR}

@@ -23,7 +23,6 @@ def handler(event, context):
                 browser = playwright.webkit.launch(headless=False)
             context = browser.new_context()
             page    = context.new_page()
-            page.route("**", lambda route: route.continue_()) # Enabling routing disables http cache.
 
         run="global result;"
         if "run" in event.keys():

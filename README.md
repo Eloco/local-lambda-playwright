@@ -1,7 +1,11 @@
 # super-lambda-playwright
 a AWS lambda API which is friendly to hacker
 
-Base on https://github.com/Eloco/lambda-playwright-python
+docker base on https://github.com/Eloco/lambda-playwright-python
+
+build on
+- https://gallery.ecr.aws/w3s2d0z8/super-lambda-playwright
+- https://github.com/Eloco/super-lambda-playwright/pkgs/container/super-lambda-playwright
 
 ```
 sudo docker pull ghcr.io/eloco/super-lambda-playwright:latest

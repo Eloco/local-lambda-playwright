@@ -8,7 +8,7 @@ import base64
 import os,sys
 import httpx,requests
 
-result = """ u need to send param  event[run] or event[run_base64] """
+result = """ u need to send param  event[run] with base64 encode """
 
 @timeout(60*10) # 10 minutes
 def handler(event, context):
@@ -16,19 +16,22 @@ def handler(event, context):
         global result
         if "browser" in event:
             if   event["browser"].lower() == "chromium":
-                browser = playwright.chromium.launch(headless=False,args=["--disable-gpu"])
+                browser = playwright.chromium.launch(headless=False)
             elif event["browser"].lower() == "firefox":
-                browser = playwright.firefox.launch(headless=False,args=["--disable-gpu"])
+                browser = playwright.firefox.launch(headless=False)
             else:
                 browser = playwright.webkit.launch(headless=False)
             context = browser.new_context()
             page    = context.new_page()
+            page.route("**", lambda route: route.continue_()) # Enabling routing disables http cache.
 
         run="global result;"
         if "run" in event.keys():
-            run+=event["run"]
-        elif "run_base64" in event.keys():
-            run+=base64.b64decode(event["run_base64"]).decode('utf-8')
+            try:
+                run+=base64.b64decode(event["run"]).decode('utf-8')
+            except:
+                run+=event["run"]
+
         exec(run)
 
         return {

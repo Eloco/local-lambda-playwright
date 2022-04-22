@@ -1,19 +1,36 @@
-FROM ghcr.io/eloco/lambda-playwright-python:latest
+FROM mcr.microsoft.com/playwright/python:latest as build-image
+ENV FUNCTION_DIR="/app"
 
-WORKDIR ${FUNCTION_DIR}
+# Create function directory
+RUN mkdir -p ${FUNCTION_DIR}
 
-# Optional
-ENV XVFB_WHD=1280x720x16
+# Copy function code and requirements
+COPY app/* ${FUNCTION_DIR}/
 
-# copy the lambda function
-COPY app/app.py ${FUNCTION_DIR}
+# Install the runtime interface client
+RUN python -m pip install -r ${FUNCTION_DIR}/requirements.txt \
+        --target ${FUNCTION_DIR} \
+        --no-cache-dir 
 
-# copy the requirements
-COPY requirements.txt  ${FUNCTION_DIR}
+# Install xvfb
+RUN apt-get update && \
+  apt-get install -y \
+  xvfb && \
+  apt-get clean && \
+  apt-get autoremove
 
-RUN chmod -R +x ${FUNCTION_DIR}
+# Multi-stage build: grab a fresh copy of the base image
+FROM mcr.microsoft.com/playwright/python:latest
 
-# install the requirements
-RUN . venv/bin/activate; pip install --no-cache-dir -r requirements.txt
+# Copy in the build image dependencies
+COPY --from=build-image ${FUNCTION_DIR} ${FUNCTION_DIR}
 
-CMD ["app.handler"]
+ADD  ./entry_script.sh              /
+ADD  ./xvfb-lambda-entrypoint.sh    /
+ADD  ./aws-lambda-rie               /usr/local/bin/aws-lambda-rie  
+
+RUN chmod -R +x /entry_script.sh /xvfb-lambda-entrypoint.sh  /usr/local/bin/aws-lambda-rie ${FUNCTION_DIR}
+
+ENTRYPOINT [ "/xvfb-lambda-entrypoint.sh" ]
+
+CMD [ "app.handler" ]

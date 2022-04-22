@@ -16,11 +16,11 @@ def handler(event, context):
         global result
         if "browser" in event:
             if   event["browser"].lower() == "chromium":
-                browser = playwright.chromium.launch(headless=False)
+                browser = playwright.chromium.launch(headless=True)
             elif event["browser"].lower() == "firefox":
-                browser = playwright.firefox.launch(headless=False)
+                browser = playwright.firefox.launch(headless=True)
             else:
-                browser = playwright.webkit.launch(headless=False)
+                browser = playwright.webkit.launch(headless=True)
             context = browser.new_context()
             page    = context.new_page()
 

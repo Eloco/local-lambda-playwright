@@ -4,6 +4,7 @@ on:
   push:
     tags: v[0-9]+.[0-9]+.[0-9]+
 
+
 jobs:
   publish:
     name: Publish image
@@ -14,6 +15,7 @@ jobs:
       run: | 
         echo "REPOSITORY_NAME=$(echo '${{ github.repository }}' | awk -F '.git' '{print tolower($1)}')" >> $GITHUB_ENV
         echo "GITHUB_CONTAINER_REGISTRY_IMAGE=ghcr.io/$(echo '${{ github.repository }}' | awk -F '.git' '{print tolower($1)}')" >> $GITHUB_ENV
+
       shell: bash
 
     - name: Check out repository
@@ -23,7 +25,8 @@ jobs:
       id: docker_meta
       uses: crazy-max/ghaction-docker-meta@v1
       with:
-        images: ${{ env.GITHUB_CONTAINER_REGISTRY_IMAGE  }}
+        images: |
+          ${{ env.GITHUB_CONTAINER_REGISTRY_IMAGE }}
         tag-sha: true
         tag-semver: "{{version}}"
 
@@ -45,11 +48,11 @@ jobs:
       uses: docker/build-push-action@v2
       with:
         push: true
-        platforms: |
-          linux/amd64
         tags: |
           ${{ steps.docker_meta.outputs.tags }}
         labels: ${{ steps.docker_meta.outputs.labels }}
+        cache-from: type=registry,ref=${{ env.GITHUB_CONTAINER_REGISTRY_IMAGE }}:latest-dev
+
     - name: Create release
       uses: actions/create-release@v1
       env:

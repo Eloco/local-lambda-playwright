@@ -7,9 +7,9 @@ build on
 
 note: it can run on local docker
 ```
-sudo docker pull public.ecr.aws/w3s2d0z8/super-lambda-playwright:main
-sudo docker pull ghcr.io/eloco/super-lambda-playwright:latest
-sudo docker run --rm=True -p 9000:8080 ghcr.io/eloco/super-lambda-playwright
+sudo docker pull public.ecr.aws/w3s2d0z8/local-lambda-playwright:main
+sudo docker pull ghcr.io/eloco/local-lambda-playwright:latest
+sudo docker run --rm=True -p 9000:8080 ghcr.io/eloco/local-lambda-playwright
 ```
 
 ```

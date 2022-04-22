@@ -20,7 +20,7 @@ def handler(event, context):
             elif event["browser"].lower() == "firefox":
                 browser = playwright.firefox.launch(headless=False,args=["--disable-gpu"])
             else:
-                browser = playwright.webkit.launch(headless=False,args=["--disable-gpu"])
+                browser = playwright.webkit.launch(headless=False)
             context = browser.new_context()
             page    = context.new_page()
 

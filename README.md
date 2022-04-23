@@ -22,7 +22,7 @@ curl -XPOST "http://localhost:9000/2015-03-31/functions/function/invocations" -d
 
 ```
 bs64=`echo "stealth_sync(page);page.goto('http://whatsmyuseragent.org/',wait_until='commit'); result=page.content()" | base64 -w 0`
-curl -s -XPOST "http://localhost:9000/2015-03-31/functions/function/invocations" -d '{"browser":"firefox","run":"'${bs64}'"}' | jq .body | html2text -utf8  | sed -r "s/\\\n//g"  | grep -v '^\s*$' | grep -v '^"'
+curl -s -XPOST "http://localhost:9000/2015-03-31/functions/function/invocations" -d '{"browser":"firefox","run":"'${bs64}'"}' | jq .result | html2text -utf8  | sed -r "s/\\\n//g"  | grep -v '^\s*$' | grep -v '^"'
 
  What's my User Agent?
 Mozilla/5.0 (X11; Linux x86_64; rv:98.0) Gecko/20100101 Firefox/98.0

@@ -26,6 +26,6 @@ curl -s -XPOST "http://localhost:9000/2015-03-31/functions/function/invocations"
 
  What's my User Agent?
 Mozilla/5.0 (X11; Linux x86_64; rv:98.0) Gecko/20100101 Firefox/98.0
-My IP Address: 34.251.234.37
+My IP Address: xx.xx.xx.xx
 Copyright © What's my User Agent 2015
 ```

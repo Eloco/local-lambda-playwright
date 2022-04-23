@@ -14,6 +14,7 @@ result = """ u need to send param  event[run] with base64 encode """
 
 @timeout(60*10) # 10 minutes
 def handler(event, context):
+    status_code = 200
     try:
         with sync_playwright() as playwright:
             global result

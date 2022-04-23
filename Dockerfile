@@ -39,4 +39,7 @@ RUN chmod -R +x /entry_script.sh /xvfb-lambda-entrypoint.sh  /usr/local/bin/aws-
 
 ENTRYPOINT [ "/xvfb-lambda-entrypoint.sh" ]
 
+ENV PORT=8080
+EXPOSE ${PORT}
+
 CMD [ "app.handler" ]
